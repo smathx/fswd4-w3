@@ -73,25 +73,15 @@ angular.module('conFusion.controllers', [])
 })
 
 .controller('MenuController', [
-  '$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
-  function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
+  '$scope', 'dishes', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
+  function ($scope, dishes, favoriteFactory, baseURL, $ionicListDelegate) {
 
     $scope.baseURL = baseURL;
     $scope.tab = 1;
     $scope.filtText = '';
     $scope.showDetails = false;
-    $scope.showMenu = false;
-    $scope.message = "Loading ...";
 
-    $scope.dishes = menuFactory.query(
-      function (response) {
-        $scope.dishes = response;
-        $scope.showMenu = true;
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-      }
-    );
+    $scope.dishes = dishes;
 
     $scope.select = function (setTab) {
       $scope.tab = setTab;
@@ -301,61 +291,36 @@ angular.module('conFusion.controllers', [])
   }
 ])
 
-// implement the IndexController and About Controller here
-
 .controller('IndexController', [
-  '$scope', 'menuFactory', 'promotionFactory', 'corporateFactory', 'baseURL',
-  function ($scope, menuFactory, promotionFactory, corporateFactory, baseURL) {
+  '$scope', 'dish', 'promotion', 'leader', 'baseURL',
+  function ($scope, dish, promotion, leader, baseURL) {
 
     $scope.baseURL = baseURL;
-    $scope.leader = corporateFactory.get({
-      id: 3
-    });
-
-    $scope.showDish = false;
-    $scope.message = "Loading ...";
-
-    $scope.dish = menuFactory.get({
-        id: 0
-      })
-      .$promise.then(
-        function (response) {
-          $scope.dish = response;
-          $scope.showDish = true;
-        },
-        function (response) {
-          $scope.message = "Error: " + response.status + " " + response.statusText;
-        }
-      );
-
-    $scope.promotion = promotionFactory.get({
-      id: 0
-    });
+    $scope.dish = dish;
+    $scope.promotion = promotion;
+    $scope.leader = leader;
   }
 ])
 
 .controller('AboutController', [
-  '$scope', 'corporateFactory', 'baseURL',
-  function ($scope, corporateFactory, baseURL) {
+  '$scope', 'leaders', 'baseURL',
+  function ($scope, leaders, baseURL) {
 
     $scope.baseURL = baseURL;
-    $scope.leaders = corporateFactory.query();
-    console.log($scope.leaders);
+    $scope.leaders = leaders;
   }
 ])
 
 .controller('FavoritesController', [
   '$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
-  '$ionicPopup', '$ionicLoading', '$timeout',
+  '$ionicPopup', '$ionicLoading',
   function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate,
-    $ionicPopup, $ionicLoading, $timeout) {
+    $ionicPopup, $ionicLoading) {
 
     $scope.baseURL = baseURL;
     $scope.shouldShowDelete = false;
     $scope.favorites = favorites;
     $scope.dishes = dishes;
-
-    console.log($scope.dishes, $scope.favorites);
 
     $scope.toggleDelete = function () {
       $scope.shouldShowDelete = !$scope.shouldShowDelete;

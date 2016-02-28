@@ -20,7 +20,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
       StatusBar.styleDefault();
     }
   });
-  
+
   $rootScope.$on('loading:show', function () {
     $ionicLoading.show({
       template: '<ion-spinner></ion-spinner> Loading ...'
@@ -43,10 +43,10 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-  
+
   // Fix scroll bar visibility problem on Android by using JS scrolling.
   $ionicConfigProvider.scrolling.jsScrolling(true);
-  
+
   $stateProvider
 
   .state('app', {
@@ -61,7 +61,18 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
     views: {
       'mainContent': {
         templateUrl: 'templates/home.html',
-        controller: 'IndexController'
+        controller: 'IndexController',
+        resolve: {
+          dish: ['menuFactory', function (menuFactory) {
+            return menuFactory.get({id: 0});
+          }],
+          leader: ['corporateFactory', function (corporateFactory) {
+            return corporateFactory.get({id: 3});
+          }],
+          promotion: ['promotionFactory', function (promotionFactory) {
+            return promotionFactory.get({id: 0});
+          }]
+        }
       }
     }
   })
@@ -71,7 +82,12 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
     views: {
       'mainContent': {
         templateUrl: 'templates/aboutus.html',
-        controller: 'AboutController'
+        controller: 'AboutController',
+        resolve: {
+          leaders: ['corporateFactory', function (corporateFactory) {
+            return corporateFactory.query();
+          }]
+        }
       }
     }
   })
@@ -84,7 +100,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
       }
     }
   })
-    
+
   .state('app.favorites', {
     url: '/favorites',
     views: {
@@ -102,17 +118,22 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
       }
     }
   })
-   
+
   .state('app.menu', {
     url: '/menu',
     views: {
       'mainContent': {
         templateUrl: 'templates/menu.html',
-        controller: 'MenuController'
+        controller: 'MenuController',
+        resolve: {
+          dishes: ['menuFactory', function (menuFactory) {
+            return menuFactory.query();
+          }]
+        }
       }
     }
   })
-    
+
   .state('app.dishdetails', {
     url: '/menu/:id',
     views: {
@@ -129,7 +150,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
       }
     }
   })
-    
+
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
