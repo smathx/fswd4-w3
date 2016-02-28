@@ -1,6 +1,6 @@
 'use strict';
 
-// baseURL is the JSON server URI. It should be 'http://localhost:3000/' 
+// baseURL is the JSON server URI. It should be 'http://localhost:3000/'
 // when running locally.
 
 angular.module('conFusion.services', ['ngResource'])
@@ -8,7 +8,7 @@ angular.module('conFusion.services', ['ngResource'])
 .constant("baseURL", "https://fswd4-mobile-smathx.c9users.io:8081/")
 
 .factory('menuFactory', [
-  '$resource', 'baseURL', 
+  '$resource', 'baseURL',
   function ($resource, baseURL) {
     return $resource(baseURL + "dishes/:id", null, {
       'update': {
@@ -19,29 +19,30 @@ angular.module('conFusion.services', ['ngResource'])
 ])
 
 .factory('promotionFactory', [
-  '$resource', 'baseURL', 
+  '$resource', 'baseURL',
   function ($resource, baseURL) {
     return $resource(baseURL + "promotions/:id");
   }
 ])
 
 .factory('corporateFactory', [
-  '$resource', 'baseURL', 
+  '$resource', 'baseURL',
   function($resource, baseURL) {
     return $resource(baseURL + "leadership/:id");
   }
 ])
 
 .factory('feedbackFactory', [
-  '$resource', 'baseURL', 
-  function($resource, baseURL) {  
+  '$resource', 'baseURL',
+  function($resource, baseURL) {
     return $resource(baseURL + "feedback/:id");
   }
 ])
 
-.factory('favoriteFactory', [ 
-  '$resource', 'baseURL', 
+.factory('favoriteFactory', [
+  '$resource', 'baseURL',
   function ($resource, baseURL) {
+
     var favFac = {};
     var favorites = [];
 
@@ -60,11 +61,11 @@ angular.module('conFusion.services', ['ngResource'])
         }
       }
     };
-    
+
     favFac.getFavorites = function () {
       return favorites;
     };
-    
+
     return favFac;
   }
 ])
